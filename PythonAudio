@@ -1,0 +1,18 @@
+import matplotlib.pyplot as plt
+import numpy as np
+import librosa
+
+file_path = "/Users/aarnav/Downloads/t-RSuYTVowxuz4jyetEQCkRmxT7f2PDtN.mp4"
+y, sr = librosa.load(file_path, sr=None, mono=True, duration=6.25)
+amplitudes = y.tolist()
+amplitudes_sampled = amplitudes[::312]
+plt.scatter(range(len(amplitudes_sampled)), amplitudes_sampled)
+plt.show()
+T_values = [0.01, 0.1, 1]
+for T in T_values:
+    t = np.arange(0, len(amplitudes_sampled)) * (312 / sr)
+    y = np.zeros(len(t))
+    for n, a_n in enumerate(amplitudes_sampled):
+        y += a_n * np.sin(2 * np.pi * (n + 1) * t / T)
+    plt.plot(t, y)
+plt.show()
